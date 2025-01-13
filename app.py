@@ -5,9 +5,18 @@ from datetime import datetime
 import os
 import json
 
-credentials_json = os.environ.get('GOOGLE_CREDENTIALS')
-credentials_info = json.loads(credentials_json)
-credentials = Credentials.from_service_account_info(credentials_info)
+SCOPES = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+]
+
+creds_json = os.getenv("GOOGLE_CREDENTIALS")
+creds_dict = json.loads(creds_json)
+
+credentials = Credentials.from_service_account_info(
+    creds_dict,
+    scopes=SCOPES
+)
 
 gc = gspread.authorize(credentials)
 spreadsheet = gc.open("EBD - Rodovia A")
