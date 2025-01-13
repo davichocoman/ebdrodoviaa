@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBD Rodovia A</title>
+    <link rel="shortcut icon" href="https://i.imgur.com/H94JYRc.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f1d9a4;
+        }
+        .table-container {
+            background-color: #e4c171;
+            padding: 0px;
+            border-radius: 8px;
+            margin: 0 auto;
+            width: auto;
+        }
+        table {
+            width: 100%;
+            table-layout: auto;
+            background-color: #e4c171;
+        }
+        th {
+            background-color: #e4c171;
+            text-align: center;
+            white-space: nowrap; /* Sem quebra de linha nos cabeçalhos */
+        }
+        td {
+            background-color: #e4c171;
+            text-align: center;
+            word-wrap: break-word;
+            white-space: normal; /* Permite quebra de linha nas células do corpo */
+            word-break: break-word; /* Adiciona quebras para palavras muito longas */
+        }
+        /* Estilo para as colunas específicas (1ª e 3ª colunas) */
+        td:nth-child(1), td:nth-child(3), th:nth-child(1), th:nth-child(3) {
+            white-space: nowrap; /* Impede quebra de linha */
+        }
+
+        /* Estilo para as outras colunas */
+        td:not(:nth-child(1)):not(:nth-child(3)) {
+            white-space: normal; /* Permite quebra de linha */
+            word-break: break-word; /* Adiciona quebras para palavras muito longas */
+        }
+        footer {
+            bottom: 0;
+            width: 100%;
+            background-color: #ece3cf;
+            padding: 20px;
+            text-align: center;
+            border-top: 2px solid #ddd;
+        }
+        .custom-container {
+            width: 100%;
+            margin: 0 auto;
+        }
+        .logo {
+            width: 31%;
+            max-width: 40%;
+            height: auto;
+        }
+        .titulo {
+            align-items: center;
+            text-align: center;
+        }
+        .texto {
+            align-items: center;
+            text-align: center;
+            color: brown;
+            white-space: normal;
+        }
+        .legenda-board {
+            background-color: #ffffff;
+            border: 2px dashed #2b2e28;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px auto;
+            width: 95%;
+            max-width: 95%;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+            margin-top: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ece3cf;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">EBD Rodovia A</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Ranking</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/escala">Escala de Professores</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Schedule Section -->
+    <br>
+    <h1 style="color: #d2691e;" class="titulo">Escala Anual</h1>
+    <div class="container custom-container">
+        <div class="schedule-container">
+            <h2 class="text-center mb-4">{{ title }}</h2>
+            <div class="legenda-board"><h4 class="texto">{{texto}}</h4></div>
+            <form action="/escala" method="POST" class="d-flex mb-4">
+                <select class="form-select me-2" name="classe" onchange="this.form.submit()">
+                    <option value="Coordenação" {% if classe == 'Coordenação' %}selected{% endif %}>Coordenação</option>
+                    <option value="Jardim" {% if classe == 'Jardim' %}selected{% endif %}>Jardim</option>
+                    <option value="Jovens" {% if classe == 'Jovens' %}selected{% endif %}>Jovens</option>
+                    <option value="Pré-Adolescentes" {% if classe == 'Pré-Adolescentes' %}selected{% endif %}>Pré-Adolescentes</option>
+                    <option value="Senhoras" {% if classe == 'Senhoras' %}selected{% endif %}>Senhoras</option>
+                    <option value="Senhores" {% if classe == 'Senhores' %}selected{% endif %}>Senhores</option>
+                    <option value="Professores" {% if classe == 'Professores' %}selected{% endif %}>Professores</option>
+                </select>
+            </form>
+
+            <div class="table-responsive">
+                <h3 style="background-color:#d2691e;" class="text-center mb-3">1º Trimestre</h3>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th style="background-color: #d2691e;">Data</th>
+                            <th style="background-color: #d2691e">Professor</th>
+                            <th style="background-color: #d2691e">Lição</th>
+                            <th style="background-color: #d2691e">Tema</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in trimestre_1 %}
+                        <tr>
+                            <td>{{ row['DATA'] }}</td>
+                            <td>{{ row['PROFESSOR'] }}</td>
+                            <td>{{ row['LIÇÃO'] }}</td>
+                            <td>{{ row['TEMA'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="table-responsive">
+                <h3 style="background-color:#d2691e;" class="text-center mb-3">2º Trimestre</h3>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th style="background-color: #d2691e;">Data</th>
+                            <th style="background-color: #d2691e">Professor</th>
+                            <th style="background-color: #d2691e">Lição</th>
+                            <th style="background-color: #d2691e">Tema</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in trimestre_2 %}
+                        <tr>
+                            <td>{{ row['DATA'] }}</td>
+                            <td>{{ row['PROFESSOR'] }}</td>
+                            <td>{{ row['LIÇÃO'] }}</td>
+                            <td>{{ row['TEMA'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="table-responsive">
+                <h3 style="background-color:#d2691e;" class="text-center mb-3">3º Trimestre</h3>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th style="background-color: #d2691e;">Data</th>
+                            <th style="background-color: #d2691e">Professor</th>
+                            <th style="background-color: #d2691e">Lição</th>
+                            <th style="background-color: #d2691e">Tema</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in trimestre_3 %}
+                        <tr>
+                            <td>{{ row['DATA'] }}</td>
+                            <td>{{ row['PROFESSOR'] }}</td>
+                            <td>{{ row['LIÇÃO'] }}</td>
+                            <td>{{ row['TEMA'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="table-responsive">
+                <h3 style="background-color:#d2691e;" class="text-center mb-3">4º Trimestre</h3>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th style="background-color: #d2691e;">Data</th>
+                            <th style="background-color: #d2691e">Professor</th>
+                            <th style="background-color: #d2691e">Lição</th>
+                            <th style="background-color: #d2691e">Tema</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in trimestre_4 %}
+                        <tr>
+                            <td>{{ row['DATA'] }}</td>
+                            <td>{{ row['PROFESSOR'] }}</td>
+                            <td>{{ row['LIÇÃO'] }}</td>
+                            <td>{{ row['TEMA'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>            
+        </div>
+        <br><br>
+    </div>
+
+
+
+    <!-- Footer -->
+    <footer>
+        <img src="https://i.imgur.com/H94JYRc.png" alt="Logo EBD" class="logo">
+        <img src="https://i.imgur.com/UspVkDW.png" alt="Logo Davi Campos" class="logo">
+        <img src="https://i.imgur.com/aVzWkCT.png" alt="Logo Igreja" class="logo">
+        <br>
+        <br>
+        <p>Davi Campos - Escola Bíblica Dominical &copy; {{ year }}</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

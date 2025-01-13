@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Pesquisar por Nome</h1>
+    <form method="POST" action="/buscar" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="nome" class="form-control" placeholder="Digite o nome" required>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+    </form>
+    {% if dados %}
+        <h2>Resultado</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    {% for key in dados[0].keys() %}
+                        <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in dados %}
+                    <tr>
+                        {% for value in row.values() %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% elif mensagem %}
+        <div class="alert alert-warning">{{ mensagem }}</div>
+    {% endif %}
+{% endblock %}
