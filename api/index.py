@@ -14,11 +14,13 @@ def conectar_sheets(nome_do_sheet: str, nome_da_aba: str):
             "https://spreadsheets.google.com/feeds",
             "https://www.googleapis.com/auth/drive"
         ]
-        creds = ServiceAccountCredentials.from_json_keyfile_name(JSON_CRED_FILE, scope)
+        creds_dict = json.loads(os.getenv("GOOGLE_CREDENTIALS"))
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
         client = gspread.authorize(creds)
         worksheet = client.open(nome_do_sheet).worksheet(nome_da_aba)
         return worksheet
     except Exception as e:
+        print(f"Erro ao conectar com Sheets: {e}")
         return None
 
 app = Flask(__name__)
