@@ -7,21 +7,9 @@ import json
 
 JSON_CRED_FILE = os.getenv("GOOGLE_CREDENTIALS")
 
-def conectar_sheets(nome_do_sheet: str, nome_da_aba: str):
-    """Conecta-se ao Google Sheets e retorna a worksheet especificada."""
-    try:
-        scope = [
-            "https://spreadsheets.google.com/feeds",
-            "https://www.googleapis.com/auth/drive"
-        ]
-        creds_dict = json.loads(os.getenv("GOOGLE_CREDENTIALS"))
-        creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
-        client = gspread.authorize(creds)
-        worksheet = client.open(nome_do_sheet).worksheet(nome_da_aba)
-        return worksheet
-    except Exception as e:
-        print(f"Erro ao conectar com Sheets: {e}")
-        return None
+def conectar_sheets(sheet_name, aba):
+    client = gspread.service_account(filename=JSON_CRED_FILE)
+    return client.open(sheet_name).worksheet(aba)
 
 app = Flask(__name__)
 
@@ -41,7 +29,7 @@ def index():
     ), 500
 
     else:
-        valores = planilha.get_all_records()
+        valores = planilha.get_all_records(expected_headers=["DATA", "PROFESSOR", "LIÇÃO","TRIMESTRE", "TEMA"])
 
 
         trimestre_1 = []
