@@ -1,14 +1,18 @@
 from flask import Flask, render_template, request
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 from datetime import datetime
 import os
 import json
 
-JSON_CRED_FILE = os.getenv("GOOGLE_CREDENTIALS")
+JSON_CRED_FILE = json.loads(os.getenv("GOOGLE_CREDENTIALS"))
 
 def conectar_sheets(sheet_name, aba):
-    client = gspread.service_account(filename=JSON_CRED_FILE)
+    # Criação das credenciais a partir do JSON carregado
+    credentials = Credentials.from_service_account_info(JSON_CRED_FILE)
+
+    # Conectar com o gspread utilizando as credenciais
+    client = gspread.authorize(credentials)
     return client.open(sheet_name).worksheet(aba)
 
 app = Flask(__name__)
