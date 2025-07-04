@@ -15,13 +15,10 @@ except Exception as e:
     raise ValueError(f"Erro ao carregar JSON de credenciais: {str(e)}")
 
 def conectar_sheets(sheet_name, aba):
-    try:
-        credentials = Credentials.from_service_account_info(JSON_CRED_FILE)
-        client = gspread.authorize(credentials)
-        return client.open(sheet_name).worksheet(aba)
-    except Exception as e:
-        print(f"Erro ao conectar ao Google Sheets: {e}")
-        return None
+    scopes = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
+    credentials = Credentials.from_service_account_info(JSON_CRED_FILE, scopes=scopes)
+    client = gspread.authorize(credentials)
+    return client.open(sheet_name).worksheet(aba)
 
 app = Flask(__name__)
 
