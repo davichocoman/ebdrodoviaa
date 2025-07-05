@@ -73,7 +73,7 @@ async def index(request: Request, classe: str = Form("Coordenação")): # Use Fo
         return HTMLResponse(content=f"Erro interno: {str(e)}", status_code=500)
 
 # # Para Vercel, o FastAPI 'app' já é o handler
-# handler = app
+handler = app
 
-if __name__ == "__main__":
-    app.run(debug=True) # debug=True é útil para desenvolvimento local
+# if __name__ == "__main__":
+#     app.run(debug=True) # debug=True é útil para desenvolvimento local
