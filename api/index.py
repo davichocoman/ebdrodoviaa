@@ -12,11 +12,11 @@ import json
 templates = Jinja2Templates(directory="templates")
 
 # JSON_CRED_FILE = "GOOGLE_CREDENTIALS.json"
-JSON_CRED_FILE = os.getenv("GOOGLE_CREDENTIALS.json")
+JSON_CRED_FILE = os.getenv("GOOGLE_CREDENTIALS")
 
 def conectar_sheets(nome_do_sheets, nome_da_planilha):
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name("GOOGLE_CREDENTIALS.json", scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_name(JSON_CRED_FILE, scope)
     client = gspread.authorize(creds)
     return client.open(nome_do_sheets).worksheet(nome_da_planilha)
 
